@@ -19,6 +19,13 @@ const eslintConfig = [
       "build/**",
       "next-env.d.ts",
     ],
+    rules: {
+      // useEffect の依存配列に対する過剰な警告をOFF
+      "react-hooks/exhaustive-deps": "off",
+
+      // レベル選択などで <img> を使いたい場合はONにしておくと楽
+      "next/no-img-element": "off",
+    },
   },
 ];
 

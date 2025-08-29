@@ -1,12 +1,8 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
-    output: "export",            // ← 静的書き出し
-    images: { unoptimized: true } // ← next/image を静的対応
-    // 緊急回避したいときだけ（恒久NG）
-    // eslint: { ignoreDuringBuilds: true },
-    // typescript: { ignoreBuildErrors: true },
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export',          // ← これが新方式
+  images: { unoptimized: true }, // next/image を使っている場合は必須
+  // trailingSlash: true,     // 必要なら有効に（相対パスで困るとき）
 };
-
-export default nextConfig;
+module.exports = nextConfig;

@@ -1,3 +1,6 @@
+このアプリは子供から大人まで対象としたゲームです。
+背景の中から柴犬を探し、たまに出てくるレア柴を見つけて図鑑を完成させよう。
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

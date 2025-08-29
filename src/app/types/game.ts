@@ -1,5 +1,7 @@
 // src/types/game.ts
 export type Rarity = "common" | "uncommon" | "rare" | "legendary";
+// types/game.ts 例
+export type BackgroundType = "forest" | "desert" | "snow" | "library" | "night";
 
 export interface DogBreed {
   id: string;

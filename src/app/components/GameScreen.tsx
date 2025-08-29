@@ -16,13 +16,7 @@ import CamouflageShibaInuDog from "@/app/components/CamouflageShibaInuDog";
 import type { DogEntity } from "@/app/types/game";
 
 // 型定義
-type BackgroundType =
-  | "forest"
-  | "desert"
-  | "snow"
-  | "library"
-  | "night"
-  | string;
+type BackgroundType = "forest" | "desert" | "snow" | "library" | "night";
 
 type Level = {
   dogs: DogEntity[];
@@ -80,7 +74,7 @@ const GameScreen: React.FC<Props> = ({
 
     const positions: Array<{ x: number; y: number }> = [];
 
-    return dogs.map((dog, index) => {
+    return dogs.map((dog) => {
       let attempts = 0;
       let newPosition: { x: number; y: number };
 
@@ -94,10 +88,8 @@ const GameScreen: React.FC<Props> = ({
         attempts < 50 && // 無限ループ防止
         positions.some(
           (pos) =>
-            Math.sqrt(
-              Math.pow(pos.x - newPosition.x, 2) +
-                Math.pow(pos.y - newPosition.y, 2)
-            ) < minDistance
+            Math.hypot(pos.x - newPosition.x, pos.y - newPosition.y) <
+            minDistance
         )
       );
 
@@ -117,7 +109,7 @@ const GameScreen: React.FC<Props> = ({
       const randomized = randomizeDogPositions(level.dogs);
       setRandomizedDogs(randomized);
     }
-  }, [level.index, level.dogs]); // level.indexが変わったときに再ランダム化
+  }, [level.index, level.dogs]);
 
   // タイマーフォーマット
   const formatTime = (seconds: number) => {
@@ -126,40 +118,38 @@ const GameScreen: React.FC<Props> = ({
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  // テーマカラー取得
-  const themeColors = (() => {
-    const themes = {
-      forest: {
-        primary: "from-green-600 via-emerald-600 to-teal-700",
-        accent: "from-green-100 to-emerald-100",
-        text: "text-green-700",
-      },
-      desert: {
-        primary: "from-yellow-600 via-orange-600 to-red-700",
-        accent: "from-yellow-100 to-orange-100",
-        text: "text-orange-700",
-      },
-      snow: {
-        primary: "from-blue-600 via-cyan-600 to-purple-700",
-        accent: "from-blue-100 to-cyan-100",
-        text: "text-blue-700",
-      },
-      library: {
-        primary: "from-amber-600 via-yellow-600 to-orange-700",
-        accent: "from-amber-100 to-yellow-100",
-        text: "text-amber-700",
-      },
-      night: {
-        primary: "from-purple-600 via-indigo-600 to-blue-700",
-        accent: "from-purple-100 to-indigo-100",
-        text: "text-purple-700",
-      },
-    };
-    return (
-      themes[(level.backgroundType as keyof typeof themes) ?? "forest"] ||
-      themes.forest
-    );
-  })();
+  // テーマカラー（オブジェクト → キーで参照）
+  const themes = {
+    forest: {
+      primary: "from-green-600 via-emerald-600 to-teal-700",
+      accent: "from-green-100 to-emerald-100",
+      text: "text-green-700",
+    },
+    desert: {
+      primary: "from-yellow-600 via-orange-600 to-red-700",
+      accent: "from-yellow-100 to-orange-100",
+      text: "text-orange-700",
+    },
+    snow: {
+      primary: "from-blue-600 via-cyan-600 to-purple-700",
+      accent: "from-blue-100 to-cyan-100",
+      text: "text-blue-700",
+    },
+    library: {
+      primary: "from-amber-600 via-yellow-600 to-orange-700",
+      accent: "from-amber-100 to-yellow-100",
+      text: "text-amber-700",
+    },
+    night: {
+      primary: "from-purple-600 via-indigo-600 to-blue-700",
+      accent: "from-purple-100 to-indigo-100",
+      text: "text-purple-700",
+    },
+  } as const;
+
+  type ThemeKey = keyof typeof themes;
+  const themeKey: ThemeKey = level.backgroundType ?? "forest";
+  const themeColors = themes[themeKey];
 
   const bgSrc = level.backgroundImage ?? "";
   const isLastLevel = level.index + 1 === totalLevels;
@@ -290,7 +280,7 @@ const GameScreen: React.FC<Props> = ({
               <CamouflageShibaInuDog
                 key={dog.id}
                 dog={dog}
-                backgroundType={(level.backgroundType as any) ?? "forest"}
+                backgroundType={level.backgroundType ?? "forest"}
                 isFound={!!dog.id && foundDogs.includes(dog.id)}
                 onClick={(e) => onDogClick(dog, e)}
                 showPulse={false}

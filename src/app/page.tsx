@@ -7,7 +7,7 @@ import { camouflagelevels } from "@/app/data/camouflagelevels";
 import DogDex from "@/app/components/DogDex";
 import DogCard from "@/app/components/DogCard";
 import { getRandomBreed } from "@/app/data/dogBreeds";
-import type { DogEntity } from "@/app/types/game"; // id, x,y,size, breedId など
+import type { BackgroundType, DogEntity } from "@/app/types/game"; // id, x,y,size, breedId など
 
 const STORAGE_KEY = "shibaGameProgress";
 
@@ -23,7 +23,7 @@ type DynamicDog = DogEntity; // クリックで使う犬データ（DogEntityを
 type LevelBase = {
   id?: string | number;
   name: string;
-  backgroundType?: "forest" | "desert" | "snow" | "library" | "night" | string;
+  backgroundType?: BackgroundType;
   backgroundImage?: string;
   dogs: Array<{
     x: number;
@@ -35,7 +35,7 @@ type LevelBase = {
 type DynamicLevel = {
   id?: string | number;
   name: string;
-  backgroundType?: string;
+  backgroundType?: BackgroundType;
   backgroundImage?: string;
   dogs: DynamicDog[];
 };

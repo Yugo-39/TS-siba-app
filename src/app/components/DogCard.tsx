@@ -129,9 +129,27 @@ export default function DogCard({ breed, onClose }: Props) {
             />
           </div>
 
-          {/* ⭐ レア度（starshine / すたーしゃいん） */}
+          {/* 犬の名前（breed name / ぶりーど ねーむ） */}
+          <div className="mt-4 text-center">
+            <h2
+              className={[
+                "text-xl font-bold drop-shadow-lg",
+                raritySafe === "legendary"
+                  ? "text-yellow-300"
+                  : raritySafe === "rare"
+                  ? "text-purple-300"
+                  : raritySafe === "uncommon"
+                  ? "text-green-300"
+                  : "text-blue-300",
+              ].join(" ")}
+            >
+              {breed.name}
+            </h2>
+          </div>
+
+          {/* ⭐ レア度*/}
           {starCount > 0 && (
-            <div className="mt-3 text-center">
+            <div className="mt-2 text-center">
               <div
                 className={[
                   "text-2xl font-bold drop-shadow-lg starshine",

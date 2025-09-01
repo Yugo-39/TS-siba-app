@@ -179,7 +179,7 @@ const LevelSelectScreen: React.FC<Props> = ({
 
         {/* フッターヒント（任意） */}
         <p className="mt-10 text-center text-sm text-white/60">
-          どのカードもクリックで即スタート。がんばってね！
+          どのカードもクリックで即スタート
         </p>
       </main>
     </div>

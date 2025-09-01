@@ -260,14 +260,14 @@ const GameScreen: React.FC<Props> = ({
                 の柴犬が巧妙に隠れています！
               </p>
               <p className="text-sm text-gray-600 mb-4">
-                背景に溶け込んでいるので、じっくり観察してね 🔍
+                背景に溶け込んでいるので、じっくり観察してね
               </p>
               <button
                 onClick={onStartGame}
                 className={`bg-gradient-to-r ${themeColors.primary} hover:opacity-90 text-white font-bold py-4 px-8 rounded-xl transition-all transform hover:scale-105 shadow-lg flex items-center gap-2 mx-auto`}
               >
                 <Search className="w-5 h-5" />
-                探偵開始
+                開始
               </button>
             </div>
           </div>
@@ -325,7 +325,7 @@ const GameScreen: React.FC<Props> = ({
                   <h2
                     className={`text-3xl font-bold mb-2 bg-gradient-to-r ${themeColors.primary} bg-clip-text text-transparent`}
                   >
-                    探偵ミッション完了！
+                    ミッション完了
                   </h2>
                   <div className="flex items-center justify-center gap-2 mb-4">
                     <Clock className="w-5 h-5 text-gray-600" />
@@ -338,7 +338,7 @@ const GameScreen: React.FC<Props> = ({
                       className={`bg-gradient-to-r ${themeColors.accent} px-4 py-2 rounded-full mb-4`}
                     >
                       <span className={`${themeColors.text} font-bold`}>
-                        🏆 新記録達成！
+                        🏆 新記録達成
                       </span>
                     </div>
                   )}

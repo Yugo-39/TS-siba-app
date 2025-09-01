@@ -129,7 +129,7 @@ const BreedCard: React.FC<{
           </p>
         ) : (
           <p className="text-sm text-white/50 leading-relaxed italic">
-            まだ発見されていない神秘の柴犬...
+            まだ発見されていない柴犬...
           </p>
         )}
       </div>
@@ -216,9 +216,7 @@ const DogDex: React.FC<Props> = ({ discovered = [], onBack = () => {} }) => {
                 <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-yellow-300 via-pink-400 to-purple-400 bg-clip-text text-transparent">
                   🐕 柴犬図鑑 🐕
                 </h1>
-                <p className="text-white/80 text-lg">
-                  様々な場所で出会った柴犬たちのコレクション
-                </p>
+                <p className="text-white/80 text-lg">柴犬たちのコレクション</p>
               </div>
               <div className="w-20" /> {/* スペーサー */}
             </div>

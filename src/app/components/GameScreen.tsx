@@ -183,38 +183,76 @@ const GameScreen: React.FC<Props> = ({
   }, [showSuccess, isLastLevel, onGoHome]);
 
   return (
-    <div className="w-full h-screen flex flex-col">
+    <div className="w-full h-screen flex flex-col relative overflow-hidden">
+      {/* 統一された背景システム */}
+      <div className="absolute inset-0 -z-10 bg-cover bg-center responsive-bg"></div>
+
+      <style jsx>{`
+        .responsive-bg {
+          background-image: url("/images/home/img-mobile.png");
+          background-size: cover;
+          background-position: center;
+        }
+
+        @media (min-width: 1024px) {
+          .responsive-bg {
+            background-image: url("/images/home/img-desktop.png");
+          }
+        }
+      `}</style>
       {/* ヘッダー */}
-      <div
-        className={`bg-gradient-to-r ${themeColors.primary} text-white p-4 shadow-lg`}
-      >
-        <div className="flex items-center justify-between mb-2">
-          <button
-            onClick={onGoHome}
-            className="bg-white/20 backdrop-blur hover:bg-white/30 p-3 rounded-xl transition-all transform hover:scale-105 shadow-lg"
-          >
-            <Home className="w-5 h-5" />
-          </button>
-        </div>
-
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2 bg-white/20 backdrop-blur px-4 py-2 rounded-xl">
-            <Trophy className="w-5 h-5" />
-            <span className="font-semibold">
-              レベル {level.index + 1}: {level.name}
-            </span>
+      <div className="relative backdrop-blur-md bg-white/10 border-b border-white/20 shadow-lg">
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          {/* 上部：ホームボタン */}
+          <div className="flex justify-start mb-4">
+            <button
+              onClick={onGoHome}
+              className="py-2 px-4 font-bold text-lg text-white rounded-full relative overflow-hidden transition-transform hover:scale-105"
+              style={{
+                border: "3px solid transparent",
+                borderRadius: "1.5rem",
+                background:
+                  "linear-gradient(90deg, #ff3366, #9933ff) padding-box, linear-gradient(90deg, #ffdd55 70%, #ff66cc, #9933ff) border-box",
+                boxShadow:
+                  "0 0 10px rgba(255, 51, 102, 0.6), 0 0 20px rgba(255, 102, 204, 0.4), 0 0 30px rgba(153, 51, 255, 0.3)",
+              }}
+            >
+              <Home className="w-4 h-4 inline mr-2" />
+              ホーム
+            </button>
           </div>
 
-          <div className="flex items-center gap-2 bg-white/20 backdrop-blur px-4 py-2 rounded-xl">
-            <Clock className="w-5 h-5" />
-            <span className="font-mono text-lg">{formatTime(timer)}</span>
+          {/* 中央：レベル情報 */}
+          <div className="text-center mb-4">
+            <h1 className="text-3xl font-extrabold mb-1 bg-gradient-to-b from-yellow-300 via-orange-300 to-pink-300 bg-clip-text text-transparent drop-shadow-lg">
+              {level.name}
+            </h1>
+            <div className="flex items-center justify-center gap-2">
+              <span className="text-white/80 text-sm">レベル {level.index + 1}</span>
+              {level.difficulty && (
+                <span className="px-2 py-1 bg-white/20 rounded-full text-xs text-white/90 backdrop-blur-sm">
+                  {level.difficulty}
+                </span>
+              )}
+            </div>
           </div>
 
-          <div className="flex items-center gap-2 bg-white/20 backdrop-blur px-4 py-2 rounded-xl">
-            <Target className="w-5 h-5" />
-            <span className="font-semibold">
-              {foundDogs.length}/{level.dogs.length} 匹
-            </span>
+          {/* 下部：ゲーム情報 */}
+          <div className="flex justify-center items-center gap-6">
+            <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/20">
+              <Clock className="w-4 h-4 text-white" />
+              <span className="font-mono text-lg text-white">{formatTime(timer)}</span>
+              {isNewRecord && (
+                <span className="text-yellow-300 text-xs ml-1">🏆</span>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/20">
+              <Target className="w-4 h-4 text-white" />
+              <span className="font-semibold text-white">
+                {foundDogs.length}/{level.dogs.length} 匹
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -253,38 +291,42 @@ const GameScreen: React.FC<Props> = ({
         {/* スタートオーバーレイ */}
         {!isPlaying && !showSuccess && imageLoaded && (
           <div className="absolute inset-0 bg-gradient-to-br from-black/70 to-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-            <div className="bg-white/95 backdrop-blur p-8 rounded-2xl text-center max-w-md shadow-2xl border border-white/20">
+            <div className="backdrop-blur-md bg-white/10 rounded-2xl p-8 shadow-lg border border-white/20 text-center max-w-md mx-4">
               <div className="mb-6">
                 <div className="text-6xl mb-4">🕵️‍♀️</div>
-                <h2
-                  className={`text-3xl font-bold mb-2 bg-gradient-to-r ${themeColors.primary} bg-clip-text text-transparent`}
-                >
+                <h2 className="text-3xl font-bold mb-2 bg-gradient-to-b from-yellow-300 via-orange-300 to-pink-300 bg-clip-text text-transparent drop-shadow-lg">
                   レベル {level.index + 1}
                 </h2>
-                <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                <h3 className="text-xl font-semibold text-white mb-2 drop-shadow">
                   {level.name}
                 </h3>
                 {level.difficulty && (
-                  <div
-                    className={`inline-block bg-gradient-to-r ${themeColors.accent} px-3 py-1 rounded-full text-sm font-medium ${themeColors.text}`}
-                  >
+                  <div className="inline-block bg-white/20 px-3 py-1 rounded-full text-sm font-medium text-white/90 backdrop-blur-sm border border-white/20">
                     {level.difficulty}
                   </div>
                 )}
               </div>
-              <p className="mb-2 text-gray-700">
+              <p className="mb-2 text-white/90 font-medium">
                 この場所に
-                <span className="font-bold text-purple-500">
+                <span className="font-bold text-yellow-300 mx-1">
                   {level.dogs.length}匹
                 </span>
                 の柴犬が巧妙に隠れています！
               </p>
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-white/70 mb-6">
                 背景に溶け込んでいるので、じっくり観察してね
               </p>
               <button
                 onClick={onStartGame}
-                className={`bg-gradient-to-r ${themeColors.primary} hover:opacity-90 text-white font-bold py-4 px-8 rounded-xl transition-all transform hover:scale-105 shadow-lg flex items-center gap-2 mx-auto`}
+                className="py-4 px-8 font-bold text-xl text-black rounded-full relative overflow-hidden transition-transform hover:scale-105 flex items-center gap-2 mx-auto"
+                style={{
+                  border: "4px solid transparent",
+                  borderRadius: "3rem",
+                  background:
+                    "linear-gradient(90deg, #efc416ff, #e020a0ff) padding-box, linear-gradient(90deg, #ffdd55 70%, #ff66cc) border-box",
+                  boxShadow:
+                    "0 0 15px rgba(255, 221, 85, 0.8), 0 0 30px rgba(255, 136, 0, 0.6), 0 0 50px rgba(255, 102, 204, 0.4)",
+                }}
               >
                 <Search className="w-5 h-5" />
                 開始
@@ -327,54 +369,71 @@ const GameScreen: React.FC<Props> = ({
 
         {/* 成功オーバーレイ */}
         {showSuccess && (
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-            <div className="bg-white/95 p-8 rounded-2xl text-center shadow-2xl">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+            <div className="backdrop-blur-md bg-white/10 rounded-2xl p-8 shadow-lg border border-white/20 text-center max-w-md mx-4">
               {isLastLevel ? (
                 <>
-                  <Trophy className="w-20 h-20 mx-auto mb-4 text-yellow-500" />
-                  <h2 className="text-2xl font-bold text-gray-800">
-                    全ステージクリア！おめでとう 🎉
+                  <Trophy className="w-20 h-20 mx-auto mb-4 text-yellow-300 drop-shadow-lg" />
+                  <h2 className="text-3xl font-bold mb-2 bg-gradient-to-b from-yellow-300 via-orange-300 to-pink-300 bg-clip-text text-transparent drop-shadow-lg">
+                    全ステージクリア！
                   </h2>
-                  <p className="mt-2 text-gray-600">
-                    {formatTime(timer)} で達成。3秒後にホームへ戻ります…
+                  <p className="text-lg font-bold text-white/90 mb-2">おめでとう 🎉</p>
+                  <p className="text-white/80">
+                    {formatTime(timer)} で達成
+                  </p>
+                  <p className="text-sm text-white/70 mt-2">
+                    3秒後にホームへ戻ります...
                   </p>
                 </>
               ) : (
                 <>
                   <div className="text-6xl mb-4">🎉</div>
-                  <h2
-                    className={`text-3xl font-bold mb-2 bg-gradient-to-r ${themeColors.primary} bg-clip-text text-transparent`}
-                  >
+                  <h2 className="text-3xl font-bold mb-2 bg-gradient-to-b from-yellow-300 via-orange-300 to-pink-300 bg-clip-text text-transparent drop-shadow-lg">
                     ミッション完了
                   </h2>
                   <div className="flex items-center justify-center gap-2 mb-4">
-                    <Clock className="w-5 h-5 text-gray-600" />
-                    <span className="text-2xl font-bold text-gray-800">
+                    <Clock className="w-5 h-5 text-white/80" />
+                    <span className="text-2xl font-bold text-white">
                       {formatTime(timer)}
                     </span>
                   </div>
                   {isNewRecord && (
-                    <div
-                      className={`bg-gradient-to-r ${themeColors.accent} px-4 py-2 rounded-full mb-4`}
-                    >
-                      <span className={`${themeColors.text} font-bold`}>
+                    <div className="bg-gradient-to-r from-yellow-400/20 to-orange-400/20 px-4 py-2 rounded-full mb-4 border border-yellow-300/30">
+                      <span className="text-yellow-300 font-bold">
                         🏆 新記録達成
                       </span>
                     </div>
                   )}
-                  <div className="flex gap-4 justify-center">
+                  <div className="flex gap-4 justify-center mt-6">
                     <button
                       onClick={onGoHome}
-                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105 shadow-lg flex items-center gap-2"
+                      className="py-3 px-6 font-bold text-lg text-white rounded-full relative overflow-hidden transition-transform hover:scale-105"
+                      style={{
+                        border: "3px solid transparent",
+                        borderRadius: "2rem",
+                        background:
+                          "linear-gradient(90deg, #6b7280, #4b5563) padding-box, linear-gradient(90deg, #9ca3af, #6b7280) border-box",
+                        boxShadow:
+                          "0 0 15px rgba(107, 114, 128, 0.6), 0 0 30px rgba(75, 85, 99, 0.4)",
+                      }}
                     >
-                      <Home className="w-5 h-5" />
+                      <Home className="w-5 h-5 inline mr-2" />
                       ホーム
                     </button>
                     <button
                       onClick={onNextLevel}
-                      className={`bg-gradient-to-r ${themeColors.primary} hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105 shadow-lg flex items-center gap-2`}
+                      className="py-3 px-6 font-bold text-lg text-white rounded-full relative overflow-hidden transition-transform hover:scale-105"
+                      style={{
+                        border: "3px solid transparent",
+                        borderRadius: "2rem",
+                        background:
+                          "linear-gradient(90deg, #efc416ff, #e020a0ff) padding-box, linear-gradient(90deg, #ffdd55 70%, #ff66cc) border-box",
+                        boxShadow:
+                          "0 0 15px rgba(255, 221, 85, 0.8), 0 0 30px rgba(255, 136, 0, 0.6), 0 0 50px rgba(255, 102, 204, 0.4)",
+                      }}
                     >
-                      次の場所へ <ChevronRight className="w-5 h-5" />
+                      次の場所へ
+                      <ChevronRight className="w-5 h-5 inline ml-2" />
                     </button>
                   </div>
                 </>

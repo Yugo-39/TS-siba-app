@@ -5,6 +5,7 @@ import Image from "next/image";
 type Props = {
   completedLevels?: number;
   totalLevels?: number;
+  totalStars?: number;
   onStartGame?: () => void;
   onLevelSelect?: () => void;
   onResetProgress?: () => void;
@@ -14,6 +15,7 @@ type Props = {
 const HomeScreen: React.FC<Props> = ({
   completedLevels = 0,
   totalLevels = 0,
+  totalStars = 0,
   onStartGame = () => {},
   onLevelSelect = () => {},
   onResetProgress = () => {},
@@ -21,6 +23,27 @@ const HomeScreen: React.FC<Props> = ({
 }) => {
   const achievementRate =
     totalLevels > 0 ? Math.round((completedLevels / totalLevels) * 100) : 0;
+
+  // 星の表示用関数
+  const renderStars = (starCount: number, maxDisplay: number = 10) => {
+    if (starCount === 0) return null;
+
+    const displayStars = Math.min(starCount, maxDisplay);
+    const remainingStars = Math.max(0, starCount - maxDisplay);
+
+    return (
+      <span className="inline-block">
+        <span className="text-yellow-300 drop-shadow-md animate-pulse">
+          {"⭐".repeat(displayStars)}
+        </span>
+        {remainingStars > 0 && (
+          <span className="text-yellow-300/70 text-sm ml-1">
+            +{remainingStars}
+          </span>
+        )}
+      </span>
+    );
+  };
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -63,9 +86,24 @@ const HomeScreen: React.FC<Props> = ({
               />
             </div>
           </div>
-          <h1 className="text-8xl font-extrabold mb-4 bg-gradient-to-b from-yellow-300 via-orange-300 to-pink-300 bg-clip-text text-transparent drop-shadow-lg tracking-widest">
-            SIBAINU
-          </h1>
+
+          {/* タイトルと星 */}
+          <div className="flex flex-col items-center">
+            <h1 className="text-8xl font-extrabold mb-2 bg-gradient-to-b from-yellow-300 via-orange-300 to-pink-300 bg-clip-text text-transparent drop-shadow-lg tracking-widest">
+              SIBAINU
+            </h1>
+
+            {/* 獲得した星の表示 */}
+            {totalStars > 0 && (
+              <div className="mb-4 flex items-center justify-center gap-2">
+                {renderStars(totalStars, 15)}
+                <span className="text-yellow-300 font-bold text-lg">
+                  {totalStars}個
+                </span>
+              </div>
+            )}
+          </div>
+
           <p className="text-lg font-bold text-white/90">
             風景の中から柴犬を探し出そう！
             <br />
@@ -91,7 +129,7 @@ const HomeScreen: React.FC<Props> = ({
           </button>
           <button
             onClick={onLevelSelect}
-            className="w-4/5 mx-auto py-4 font-bold text-2xl text白 rounded-full relative overflow-hidden transition-transform hover:scale-105"
+            className="w-4/5 mx-auto py-4 font-bold text-2xl text-white rounded-full relative overflow-hidden transition-transform hover:scale-105"
             style={{
               border: "4px solid transparent",
               borderRadius: "3rem",
@@ -115,7 +153,7 @@ const HomeScreen: React.FC<Props> = ({
                 "0 0 15px rgba(255, 51, 102, 0.8), 0 0 30px rgba(255, 102, 204, 0.6), 0 0 50px rgba(153, 51, 255, 0.4)",
             }}
           >
-            図鑑を見る
+            📚 図鑑を見る
           </button>
         </div>
 
@@ -124,23 +162,49 @@ const HomeScreen: React.FC<Props> = ({
           <h3 className="text-white font-bold text-xl mb-4 flex items-center justify-center gap-2">
             ⭐ あなたの成績
           </h3>
-          <div className="grid grid-cols-3 gap-6 text-white">
-            <div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-white">
+            <div className="text-center">
               <p className="text-3xl font-bold">{completedLevels}</p>
               <p className="text-sm opacity-80">クリア済み</p>
             </div>
-            <div>
+            <div className="text-center">
               <p className="text-3xl font-bold">{totalLevels}</p>
               <p className="text-sm opacity-80">全レベル</p>
             </div>
-            <div>
+            <div className="text-center">
+              <p className="text-3xl font-bold text-yellow-300">{totalStars}</p>
+              <p className="text-sm opacity-80">獲得した星</p>
+            </div>
+            <div className="text-center">
               <p className="text-3xl font-bold">{achievementRate}%</p>
               <p className="text-sm opacity-80">達成率</p>
             </div>
           </div>
 
+          {/* 星のランク表示 */}
+          {totalStars > 0 && (
+            <div className="mt-4 pt-4 border-t border-white/20">
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-white/80 text-sm">ランク:</span>
+                <span className="font-bold text-lg">
+                  {totalStars >= 30 ? (
+                    <span className="text-yellow-300">⭐ マスター ⭐</span>
+                  ) : totalStars >= 20 ? (
+                    <span className="text-blue-300">💎 エクスパート</span>
+                  ) : totalStars >= 10 ? (
+                    <span className="text-green-300">🏅 アドバンス</span>
+                  ) : totalStars >= 5 ? (
+                    <span className="text-purple-300">🥉 インターミディエイト</span>
+                  ) : (
+                    <span className="text-white/70">🌟 ビギナー</span>
+                  )}
+                </span>
+              </div>
+            </div>
+          )}
+
           {/* リセットボタン */}
-          {completedLevels > 0 && (
+          {(completedLevels > 0 || totalStars > 0) && (
             <div className="mt-6 pt-4 border-t border-white/20">
               <button
                 onClick={onResetProgress}

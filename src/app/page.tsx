@@ -33,6 +33,7 @@ type SavedProgress = {
   completedLevels: number[]; // クリア済レベル
   bestTimes: BestTimes; // ベストタイム
   discoveredBreeds: string[]; // 図鑑で見つけた犬種ID
+  totalStars: number; // 獲得した星の総数
 };
 
 // DynamicDog（ダイナミック・ドッグ）: クリックで使う犬データ
@@ -56,6 +57,35 @@ type DynamicLevel = {
   backgroundType?: BackgroundType;
   backgroundImage?: string;
   dogs: DynamicDog[];
+};
+
+/* ===================== 星計算関数 ===================== */
+// レベルクリア時の獲得星数を計算
+const calculateStarsForLevel = (clearTime: number, levelIndex: number): number => {
+  // レベルごとの目安時間（秒）を設定
+  const timeThresholds = {
+    0: [30, 60, 120], // レベル1: 30秒以内=3星, 60秒以内=2星, 120秒以内=1星
+    1: [45, 90, 180], // レベル2: 45秒以内=3星, 90秒以内=2星, 180秒以内=1星
+    // 必要に応じて他のレベルも追加
+  };
+
+  // デフォルトの時間基準
+  const defaultThresholds = [60, 120, 300]; // 60秒以内=3星, 120秒以内=2星, 300秒以内=1星
+
+  const thresholds = timeThresholds[levelIndex as keyof typeof timeThresholds] || defaultThresholds;
+
+  if (clearTime <= thresholds[0]) return 3; // 3星
+  if (clearTime <= thresholds[1]) return 2; // 2星
+  if (clearTime <= thresholds[2]) return 1; // 1星
+  return 0; // 星なし（クリアはしているが時間がかかりすぎ）
+};
+
+// 全レベルの獲得星数を計算
+const calculateTotalStars = (bestTimes: BestTimes): number => {
+  return Object.entries(bestTimes).reduce((total, [levelStr, time]) => {
+    const levelIndex = parseInt(levelStr);
+    return total + calculateStarsForLevel(time, levelIndex);
+  }, 0);
 };
 /* ===================================================== */
 
@@ -91,6 +121,7 @@ const Page: React.FC = () => {
   const [completedLevels, setCompletedLevels] = useState<number[]>([]);
   const [bestTimes, setBestTimes] = useState<BestTimes>({});
   const [discoveredBreeds, setDiscoveredBreeds] = useState<string[]>([]);
+  const [totalStars, setTotalStars] = useState(0);
 
   // クリック後に表示するカードの犬
   const [selectedBreed, setSelectedBreed] = useState<DynamicDog | null>(null);
@@ -101,9 +132,13 @@ const Page: React.FC = () => {
     if (!saved) return;
     try {
       const progress = JSON.parse(saved) as Partial<SavedProgress>;
+      const loadedBestTimes = progress.bestTimes ?? {};
+      const calculatedStars = calculateTotalStars(loadedBestTimes);
+
       setCompletedLevels(progress.completedLevels ?? []);
-      setBestTimes(progress.bestTimes ?? {});
+      setBestTimes(loadedBestTimes);
       setDiscoveredBreeds(progress.discoveredBreeds ?? []);
+      setTotalStars(calculatedStars);
     } catch (err) {
       console.error("進捗データの読み込みエラー:", err);
     }
@@ -120,15 +155,19 @@ const Page: React.FC = () => {
 
   /* ---------- 進捗保存（persist パーシスト） ---------- */
   const persistAll = (extra: Partial<SavedProgress> = {}) => {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({
-        completedLevels,
-        bestTimes,
-        discoveredBreeds,
-        ...extra,
-      })
-    );
+    const currentData = {
+      completedLevels,
+      bestTimes,
+      discoveredBreeds,
+      totalStars,
+      ...extra,
+    };
+
+    // 星数を再計算して保存
+    const updatedStars = calculateTotalStars(currentData.bestTimes);
+    currentData.totalStars = updatedStars;
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(currentData));
   };
 
   /* ---------- リセット（reset リセット） ---------- */
@@ -170,7 +209,16 @@ const Page: React.FC = () => {
       };
     });
 
-    setDynamicLevel({ ...baseLevel, dogs: randomizedDogs });
+    // より安全にdynamicLevelを作成
+    const dynamicLevelData: DynamicLevel = {
+      id: baseLevel.id,
+      name: baseLevel.name,
+      backgroundType: baseLevel.backgroundType || "forest", // デフォルト値を設定
+      backgroundImage: baseLevel.backgroundImage,
+      dogs: randomizedDogs,
+    };
+
+    setDynamicLevel(dynamicLevelData);
     setCurrentLevel(levelIndex);
     resetGame();
     setCurrentScreen("game");
@@ -223,11 +271,17 @@ const Page: React.FC = () => {
         new Set([...completedLevels, currentLevel])
       );
 
+      // 星数を再計算
+      const newTotalStars = calculateTotalStars(updatedTimes);
+
       setBestTimes(updatedTimes);
       setCompletedLevels(updatedCompleted);
+      setTotalStars(newTotalStars);
+
       persistAll({
         bestTimes: updatedTimes,
         completedLevels: updatedCompleted,
+        totalStars: newTotalStars,
       });
 
       setShowSuccess(true);
@@ -257,6 +311,7 @@ const Page: React.FC = () => {
       <HomeScreen
         completedLevels={completedLevels.length}
         totalLevels={camouflagelevels.length}
+        totalStars={totalStars}
         onStartGame={() => selectLevel(0)}
         onLevelSelect={() => setCurrentScreen("levelSelect")}
         onResetProgress={() => {
@@ -264,6 +319,7 @@ const Page: React.FC = () => {
           setCompletedLevels([]);
           setBestTimes({});
           setDiscoveredBreeds([]);
+          setTotalStars(0);
         }}
         onOpenDogDex={() => setCurrentScreen("dogdex")}
       />

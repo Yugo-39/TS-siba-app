@@ -47,6 +47,49 @@ type Props = {
   totalLevels: number;
 };
 
+// テーマカラーの型定義
+type Theme = {
+  primary: string;
+  accent: string;
+  text: string;
+};
+
+// デフォルトテーマ（フォールバック）
+const DEFAULT_THEME: Theme = {
+  primary: "from-green-600 via-emerald-600 to-teal-700",
+  accent: "from-green-100 to-emerald-100",
+  text: "text-green-700",
+};
+
+// テーマカラー定義
+const THEMES: Record<BackgroundType, Theme> = {
+  forest: {
+    primary: "from-green-600 via-emerald-600 to-teal-700",
+    accent: "from-green-100 to-emerald-100",
+    text: "text-green-700",
+  },
+  desert: {
+    primary: "from-yellow-600 via-orange-600 to-red-700",
+    accent: "from-yellow-100 to-orange-100",
+    text: "text-orange-700",
+  },
+  snow: {
+    primary: "from-blue-600 via-cyan-600 to-purple-700",
+    accent: "from-blue-100 to-cyan-100",
+    text: "text-blue-700",
+  },
+  library: {
+    primary: "from-amber-600 via-yellow-600 to-orange-700",
+    accent: "from-amber-100 to-yellow-100",
+    text: "text-amber-700",
+  },
+  night: {
+    primary: "from-purple-600 via-indigo-600 to-blue-700",
+    accent: "from-purple-100 to-indigo-100",
+    text: "text-purple-700",
+  },
+};
+
 const GameScreen: React.FC<Props> = ({
   level,
   foundDogs,
@@ -66,6 +109,16 @@ const GameScreen: React.FC<Props> = ({
 }) => {
   // ランダム化された犬の配置を管理
   const [randomizedDogs, setRandomizedDogs] = useState<DogEntity[]>([]);
+
+  // 安全なテーマカラー取得
+  const getThemeColors = (): Theme => {
+    if (!level?.backgroundType) {
+      return DEFAULT_THEME;
+    }
+    return THEMES[level.backgroundType] || DEFAULT_THEME;
+  };
+
+  const themeColors = getThemeColors();
 
   // 犬の配置をランダム化する関数
   const randomizeDogPositions = (dogs: DogEntity[]) => {
@@ -117,39 +170,6 @@ const GameScreen: React.FC<Props> = ({
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
-
-  // テーマカラー（オブジェクト → キーで参照）
-  const themes = {
-    forest: {
-      primary: "from-green-600 via-emerald-600 to-teal-700",
-      accent: "from-green-100 to-emerald-100",
-      text: "text-green-700",
-    },
-    desert: {
-      primary: "from-yellow-600 via-orange-600 to-red-700",
-      accent: "from-yellow-100 to-orange-100",
-      text: "text-orange-700",
-    },
-    snow: {
-      primary: "from-blue-600 via-cyan-600 to-purple-700",
-      accent: "from-blue-100 to-cyan-100",
-      text: "text-blue-700",
-    },
-    library: {
-      primary: "from-amber-600 via-yellow-600 to-orange-700",
-      accent: "from-amber-100 to-yellow-100",
-      text: "text-amber-700",
-    },
-    night: {
-      primary: "from-purple-600 via-indigo-600 to-blue-700",
-      accent: "from-purple-100 to-indigo-100",
-      text: "text-purple-700",
-    },
-  } as const;
-
-  type ThemeKey = keyof typeof themes;
-  const themeKey: ThemeKey = level.backgroundType ?? "forest";
-  const themeColors = themes[themeKey];
 
   const bgSrc = level.backgroundImage ?? "";
   const isLastLevel = level.index + 1 === totalLevels;

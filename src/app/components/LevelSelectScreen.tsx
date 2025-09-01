@@ -62,15 +62,8 @@ const LevelSelectScreen: React.FC<Props> = ({
 
       {/* ヘッダー */}
       <div className="relative z-10 w-full max-w-6xl mx-auto px-6 pt-8 pb-6">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-6xl font-extrabold mb-2 bg-gradient-to-b from-yellow-300 via-orange-300 to-pink-300 bg-clip-text text-transparent drop-shadow-lg tracking-widest">
-              ステージ選択
-            </h1>
-            <p className="text-lg font-bold text-white/90">
-              お気に入りのステージで、柴犬探しの腕を磨こう
-            </p>
-          </div>
+        {/* 戻るボタン */}
+        <div className="flex justify-start mb-6">
           <button
             onClick={onBack}
             className="py-3 px-6 font-bold text-xl text-white rounded-full relative overflow-hidden transition-transform hover:scale-105"
@@ -85,6 +78,16 @@ const LevelSelectScreen: React.FC<Props> = ({
           >
             戻る
           </button>
+        </div>
+
+        {/* 中央寄せのタイトル */}
+        <div className="text-center mb-6">
+          <h1 className="text-6xl font-extrabold mb-2 bg-gradient-to-b from-yellow-300 via-orange-300 to-pink-300 bg-clip-text text-transparent drop-shadow-lg tracking-widest">
+            ステージ選択
+          </h1>
+          <p className="text-lg font-bold text-white/90">
+            お気に入りのステージで、柴犬探しの腕を磨こう
+          </p>
         </div>
       </div>
 

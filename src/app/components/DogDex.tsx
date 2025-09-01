@@ -70,7 +70,7 @@ const BreedCard: React.FC<{
   const showPlaceholder = !imgSrc;
 
   return (
-    <div className="backdrop-blur-md bg-white/10 rounded-2xl shadow-lg border border-white/20 transition-all duration-300 hover:scale-105 hover:bg-white/15 hover:border-white/30">
+    <div className="backdrop-blur-md bg-white/10 rounded-2xl shadow-lg border border-white/20 transition-all duration-300">
       <div className="relative aspect-square overflow-hidden rounded-t-2xl bg-gradient-to-br from-black/20 to-black/40">
         {showPlaceholder ? (
           <div className="w-full h-full flex items-center justify-center text-5xl opacity-30">

@@ -33,22 +33,22 @@ export type CamouflageSetting = {
 
 export const camouflagelevels: LevelDef[] = [
   {
-    name: "清流のせせらぎ",
-    backgroundImage: "/images/background/im1.jpg",
+    name: "花火の夜景",
+    backgroundImage: "/images/background/hanabi.jpg",
     backgroundType: "forest",
     difficulty: "やさしい",
-    description: "自然豊かな川辺で、柴犬たちがのんびり散歩中です",
+    description: "夜空に咲く美しい花火の下で、柴犬たちが夜景を楽しんでいます",
     dogs: [
       { id: 1, x: 25, y: 35, size: 45 },
       { id: 2, x: 70, y: 65, size: 42 },
     ],
   },
   {
-    name: "海辺のバス停",
-    backgroundImage: "/images/background/im2.jpg",
+    name: "海遊館",
+    backgroundImage: "/images/background/kaiyukann.jpg",
     backgroundType: "desert",
     difficulty: "ふつう",
-    description: "穏やかな海風が吹く停留所で、柴犬たちがバスを待っています",
+    description: "大きな水族館の前で、柴犬たちが海の生き物に興味深そうに見入っています",
     dogs: [
       { id: 3, x: 15, y: 28, size: 40 },
       { id: 4, x: 55, y: 72, size: 38 },
@@ -56,11 +56,11 @@ export const camouflagelevels: LevelDef[] = [
     ],
   },
   {
-    name: "街角の自動販売機",
-    backgroundImage: "/images/background/im3.jpg",
+    name: "黒門市場",
+    backgroundImage: "/images/background/kuromon.jpg",
     backgroundType: "snow",
     difficulty: "ふつう",
-    description: "都市の一角で、柴犬たちが街の景色に溶け込んでいます",
+    description: "活気あふれる市場で、柴犬たちが美味しそうな匂いに誘われています",
     dogs: [
       { id: 6, x: 20, y: 20, size: 36 },
       { id: 7, x: 45, y: 60, size: 34 },
@@ -69,11 +69,11 @@ export const camouflagelevels: LevelDef[] = [
     ],
   },
   {
-    name: "憩いの中庭",
-    backgroundImage: "/images/background/im4.jpg",
+    name: "大阪城",
+    backgroundImage: "/images/background/osakazyou.jpg",
     backgroundType: "library",
     difficulty: "むずかしい",
-    description: "静かな中庭で、柴犬たちが思い思いの場所でくつろいでいます",
+    description: "歴史ある大阪城の美しい庭園で、柴犬たちが桜の季節を楽しんでいます",
     dogs: [
       { id: 10, x: 12, y: 35, size: 32 },
       { id: 11, x: 38, y: 15, size: 30 },
@@ -83,11 +83,11 @@ export const camouflagelevels: LevelDef[] = [
     ],
   },
   {
-    name: "お祭りの射的屋",
-    backgroundImage: "/images/background/im5.jpg",
+    name: "新世界",
+    backgroundImage: "/images/background/sinsekai.jpg",
     backgroundType: "night",
     difficulty: "とてもむずかしい",
-    description: "賑やかなお祭りの射的屋で、柴犬たちが夜の雰囲気を楽しんでいます",
+    description: "通天閣がそびえる賑やかな新世界で、柴犬たちが大阪の下町情緒を満喫中です",
     dogs: [
       { id: 15, x: 8, y: 25, size: 28 },
       { id: 16, x: 30, y: 58, size: 26 },
@@ -99,11 +99,11 @@ export const camouflagelevels: LevelDef[] = [
     ],
   },
   {
-    name: "みんなの公園",
-    backgroundImage: "/images/background/im6.jpg",
+    name: "USJ",
+    backgroundImage: "/images/background/uniba.jpg",
     backgroundType: "watercolor",
     difficulty: "エクストリーム",
-    description: "カラフルな公園で、たくさんの柴犬たちが遊び回っています",
+    description: "魔法のような世界観のテーマパークで、柴犬たちがアトラクションに夢中になっています",
     dogs: [
       { id: 22, x: 15, y: 30, size: 22 },
       { id: 23, x: 40, y: 55, size: 20 },

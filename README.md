@@ -1,55 +1,43 @@
-はじめに
+# 🐕 SIBAINU
 
-<br>
-プロジェクト名　SIBAINU
-<br>
+このアプリは **子供から大人まで楽しめる柴犬探しゲーム** です。  
+背景の中から柴犬を探し、たまに出てくる **レア柴犬** を見つけて図鑑を完成させましょう！
 
-<br>
-このアプリは子供から大人まで対象としたゲームです。
-<br>
-背景の中から柴犬を探し、たまに出てくるレア柴を見つけて図鑑を完成させるアプリです。
-<br>
-使用技術一覧
-<br>
-Next.js tailwindcss React TypeScript LucideIcons
-<br>
+---
 
-<br>
+## 🛠 使用技術
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- Lucide Icons
 
+---
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 🎮 デモ
+👉 [Netlifyで公開中](https://regal-salmiakki-afe98b.netlify.app/)
 
-## Getting Started
+---
 
-First, run the development server:
+## 🚀 インストール方法
 
 ```bash
+git clone https://github.com/Yugo-39/TS-siba-app.git
+cd TS-siba-app
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
+主な機能
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+背景から柴犬をクリックして見つけるゲーム
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+レベル選択 & 難易度別ステージ
 
-## Learn More
+ローカル保存機能（進捗を記録）
 
-To learn more about Next.js, take a look at the following resources:
+柴犬のランダム出現機能
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+図鑑機能（集めた柴犬をコレクション）
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+ランク機能（プレイヤーの達成度を評価）
